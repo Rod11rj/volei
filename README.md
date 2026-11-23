@@ -30,16 +30,6 @@ dia e a página sorteia times o mais parelhos possível.
 | Usuário | Fica salva no `localStorage` do navegador, separada por usuário. |
 
 
-> **Importante:** o site é estático e não tem servidor, então o login é verificado
-> no próprio navegador. Ele separa o modo convidado do modo com lista salva, mas
-> **não protege dados**: o código é público e as listas ficam no aparelho de quem
-> usa. Pelo mesmo motivo, a lista de um usuário não aparece em outros aparelhos.
-> Contas de verdade, sincronizadas entre aparelhos, exigiriam um serviço de
-> autenticação externo (por exemplo, Supabase ou Firebase).
-
-As senhas não ficam em texto puro no código: `js/auth.js` guarda o SHA-256 de
-`sal:senha`. O comentário no topo desse arquivo mostra como cadastrar outro usuário.
-
 ## Como o equilíbrio é calculado
 
 - **Força do jogador:** a nota da mulher vale a própria nota; a do homem é
