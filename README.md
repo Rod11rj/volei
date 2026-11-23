@@ -29,7 +29,6 @@ dia e a página sorteia times o mais parelhos possível.
 | Convidado | Fica só na memória da página. Recarregar ou sair apaga tudo. |
 | Usuário | Fica salva no `localStorage` do navegador, separada por usuário. |
 
-Usuário cadastrado: **viciado** (senha **viciado**).
 
 > **Importante:** o site é estático e não tem servidor, então o login é verificado
 > no próprio navegador. Ele separa o modo convidado do modo com lista salva, mas
