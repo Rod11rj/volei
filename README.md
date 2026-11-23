@@ -74,3 +74,5 @@ na página do repositório, gera a referência em outros formatos (APA, BibTeX).
 ## Licença
 
 Distribuído sob a licença MIT. Veja [`LICENSE`](LICENSE).
+
+Software desenvolvido com apoio de Inteligência Artificial
