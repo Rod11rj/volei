@@ -4,13 +4,15 @@
   var MODE = Object.freeze({ GUEST: "guest", USER: "user" });
   var USERS = Object.freeze([
     {
-      username: "viciado",
-      salt: "cbebad3520a37d606b4d2bbbf99a720b",
-      hash: "57e7f033d4120f13c189bfef4f0588c488892201e83137da8abcb39e822ae64b"
+      username: "viciados",
+      salt: "09977729b2cb5e662871c5e747ee5171",
+      hash: "5acbc3794bf8b719d3feec8ab01bfe66d606966240f8844c4c9e97c66166ad43",
+      formerNames: ["viciado"]
     }
   ]);
   var SESSION_KEY = "escalacao-da-selecao:sessao";
   var normalizeUsername = (value) => String(value ?? "").trim().toLowerCase();
+  var formerNamesOf = (username) => USERS.find((u) => u.username === username)?.formerNames ?? [];
   async function sha256Hex(text) {
     const digest = await globalThis.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
     return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -239,46 +241,49 @@
     const teams = raw.teams.map(keep).filter((team) => team.length > 0);
     return teams.length ? { teams, bench: keep(raw.bench) } : null;
   }
-  function parseState(raw) {
-    const data = JSON.parse(raw);
+  function parseState(data) {
     if (data?.version !== SCHEMA_VERSION) return null;
-    const players = (data.players ?? []).map(normalizePlayer).filter(Boolean);
+    const players = (Array.isArray(data.players) ? data.players : []).map(normalizePlayer).filter(Boolean);
     const ids = new Set(players.map((p) => p.id));
     return {
       players,
       maleWeight: clampWeight(data.maleWeight),
-      selected: new Set((data.selected ?? []).filter((id) => ids.has(id))),
+      selected: new Set((Array.isArray(data.selected) ? data.selected : []).filter((id) => ids.has(id))),
       result: normalizeResult(data.result, ids)
     };
   }
-  function serializeState({ players, maleWeight, selected, result }) {
-    return JSON.stringify({ version: SCHEMA_VERSION, players, maleWeight, selected: [...selected], result });
+  function toPayload({ players, maleWeight, selected, result }) {
+    return { version: SCHEMA_VERSION, players, maleWeight, selected: [...selected], result };
   }
-  function migrateLegacy(storage, key) {
-    const legacy = storage.getItem(LEGACY_KEY);
-    if (!legacy) return null;
-    storage.setItem(key, legacy);
-    storage.removeItem(LEGACY_KEY);
-    return legacy;
+  var userKey = (username) => `${KEY_PREFIX}:usuario:${username}`;
+  function migrateOldData(storage, key, username) {
+    const sources = [...formerNamesOf(username).map(userKey), LEGACY_KEY];
+    for (const source of sources) {
+      const data = storage.getItem(source);
+      if (!data) continue;
+      storage.setItem(key, data);
+      storage.removeItem(source);
+      return data;
+    }
+    return null;
   }
   function createStore(session3, { storage = globalThis.localStorage } = {}) {
     if (session3.mode !== MODE.USER) {
-      return { persistent: false, load: emptyState, save: () => true };
+      return { load: emptyState, save: () => true };
     }
-    const key = `${KEY_PREFIX}:usuario:${session3.username}`;
+    const key = userKey(session3.username);
     return {
-      persistent: true,
       load() {
         try {
-          const raw = storage.getItem(key) ?? migrateLegacy(storage, key);
-          return raw && parseState(raw) || emptyState();
+          const raw = storage.getItem(key) ?? migrateOldData(storage, key, session3.username);
+          return raw && parseState(JSON.parse(raw)) || emptyState();
         } catch {
           return emptyState();
         }
       },
       save(state2) {
         try {
-          storage.setItem(key, serializeState(state2));
+          storage.setItem(key, JSON.stringify(toPayload(state2)));
           return true;
         } catch {
           return false;

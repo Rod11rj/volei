@@ -9,13 +9,13 @@ const TEAM_COLOR_COUNT = 8; // precisa corresponder às classes .team--c* do CSS
 const SEX_SHORT = { [SEX.MALE]: 'H', [SEX.FEMALE]: 'M' };
 const SEX_LABEL = { [SEX.MALE]: 'Homem', [SEX.FEMALE]: 'Mulher' };
 
-export function ratingDots(rating) {
+function ratingDots(rating) {
   const dots = Array.from({ length: 5 }, (_, i) =>
     `<i class="rating__dot${i < rating ? ' is-on' : ''}"></i>`).join('');
   return `<span class="rating" role="img" aria-label="Nota ${rating} de 5">${dots}</span>`;
 }
 
-export function sexBadge(sex) {
+function sexBadge(sex) {
   return `<span class="badge badge--${sex}" title="${SEX_LABEL[sex]}">${SEX_SHORT[sex]}</span>`;
 }
 

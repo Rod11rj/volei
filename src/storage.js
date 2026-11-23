@@ -8,7 +8,7 @@
  * Toda leitura passa por validação: dados corrompidos ou de outra versão
  * nunca quebram a página, apenas são descartados.
  */
-import { MODE } from './auth.js';
+import { MODE, formerNamesOf } from './auth.js';
 import { SEX } from './balancer.js';
 import { cleanName } from './utils.js';
 
@@ -19,7 +19,7 @@ const MAX_NAME_LENGTH = 40;
 
 export const MALE_WEIGHT = Object.freeze({ min: 1, max: 2, step: 0.1, default: 1.4 });
 
-export function emptyState() {
+function emptyState() {
   return { players: [], maleWeight: MALE_WEIGHT.default, selected: new Set(), result: null };
 }
 
@@ -44,56 +44,65 @@ function normalizeResult(raw, validIds) {
   return teams.length ? { teams, bench: keep(raw.bench) } : null;
 }
 
-function parseState(raw) {
-  const data = JSON.parse(raw);
+/** Valida dados lidos do navegador. @returns estado ou null */
+function parseState(data) {
   if (data?.version !== SCHEMA_VERSION) return null;
-  const players = (data.players ?? []).map(normalizePlayer).filter(Boolean);
+  const players = (Array.isArray(data.players) ? data.players : []).map(normalizePlayer).filter(Boolean);
   const ids = new Set(players.map((p) => p.id));
   return {
     players,
     maleWeight: clampWeight(data.maleWeight),
-    selected: new Set((data.selected ?? []).filter((id) => ids.has(id))),
+    selected: new Set((Array.isArray(data.selected) ? data.selected : []).filter((id) => ids.has(id))),
     result: normalizeResult(data.result, ids),
   };
 }
 
-function serializeState({ players, maleWeight, selected, result }) {
-  return JSON.stringify({ version: SCHEMA_VERSION, players, maleWeight, selected: [...selected], result });
+/** Formato gravado no navegador. */
+function toPayload({ players, maleWeight, selected, result }) {
+  return { version: SCHEMA_VERSION, players, maleWeight, selected: [...selected], result };
 }
 
-/** Lista salva pela versão sem login: passa a pertencer ao primeiro usuário que entrar. */
-function migrateLegacy(storage, key) {
-  const legacy = storage.getItem(LEGACY_KEY);
-  if (!legacy) return null;
-  storage.setItem(key, legacy);
-  storage.removeItem(LEGACY_KEY);
-  return legacy;
+const userKey = (username) => `${KEY_PREFIX}:usuario:${username}`;
+
+/**
+ * Traz para a chave do usuário uma lista salva em local antigo: com um nome
+ * anterior do mesmo usuário ou pela versão sem login (1.0.0).
+ */
+function migrateOldData(storage, key, username) {
+  const sources = [...formerNamesOf(username).map(userKey), LEGACY_KEY];
+  for (const source of sources) {
+    const data = storage.getItem(source);
+    if (!data) continue;
+    storage.setItem(key, data);
+    storage.removeItem(source);
+    return data;
+  }
+  return null;
 }
 
 /**
  * @param {{ mode: string, username?: string }} session
  * @param {{ storage?: Storage }} [options]  Permite injetar um armazenamento falso nos testes.
- * @returns {{ persistent: boolean, load: () => object, save: (state: object) => boolean }}
+ * @returns {{ load: () => object, save: (state: object) => boolean }}
  */
 export function createStore(session, { storage = globalThis.localStorage } = {}) {
   if (session.mode !== MODE.USER) {
-    return { persistent: false, load: emptyState, save: () => true };
+    return { load: emptyState, save: () => true };
   }
 
-  const key = `${KEY_PREFIX}:usuario:${session.username}`;
+  const key = userKey(session.username);
   return {
-    persistent: true,
     load() {
       try {
-        const raw = storage.getItem(key) ?? migrateLegacy(storage, key);
-        return (raw && parseState(raw)) || emptyState();
+        const raw = storage.getItem(key) ?? migrateOldData(storage, key, session.username);
+        return (raw && parseState(JSON.parse(raw))) || emptyState();
       } catch {
         return emptyState();
       }
     },
     save(state) {
       try {
-        storage.setItem(key, serializeState(state));
+        storage.setItem(key, JSON.stringify(toPayload(state)));
         return true;
       } catch {
         return false;

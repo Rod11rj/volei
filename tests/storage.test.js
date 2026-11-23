@@ -15,7 +15,6 @@ const sampleState = () => ({
 test('convidado não grava nada', () => {
   const storage = memoryStorage();
   const store = createStore({ mode: MODE.GUEST }, { storage });
-  assert.equal(store.persistent, false);
   store.save(sampleState());
   assert.equal(storage.size, 0);
   assert.deepEqual(store.load().players, []);
@@ -23,8 +22,8 @@ test('convidado não grava nada', () => {
 
 test('usuário grava e recupera a lista', () => {
   const storage = memoryStorage();
-  createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).save(sampleState());
-  const loaded = createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).load();
+  createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).save(sampleState());
+  const loaded = createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).load();
   assert.deepEqual(loaded.players, sampleState().players);
   assert.equal(loaded.maleWeight, 1.5);
   assert.deepEqual([...loaded.selected], ['p1']);
@@ -32,20 +31,28 @@ test('usuário grava e recupera a lista', () => {
 
 test('cada usuário tem a própria lista', () => {
   const storage = memoryStorage();
-  createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).save(sampleState());
+  createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).save(sampleState());
   assert.deepEqual(createStore({ mode: MODE.USER, username: 'outro' }, { storage }).load().players, []);
 });
 
 test('lista da versão sem login é migrada para o usuário', () => {
   const storage = memoryStorage();
   storage.setItem('escalacao-da-selecao', JSON.stringify({ version: 1, ...sampleState(), selected: ['p1'] }));
-  const loaded = createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).load();
+  const loaded = createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).load();
   assert.equal(loaded.players[0].name, 'Ana');
   assert.equal(storage.getItem('escalacao-da-selecao'), null);
 });
 
+test('lista salva com o nome antigo (viciado) passa para viciados', () => {
+  const storage = memoryStorage();
+  createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).save(sampleState());
+  const loaded = createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).load();
+  assert.equal(loaded.players[0].name, 'Ana');
+  assert.equal(storage.getItem('escalacao-da-selecao:usuario:viciado'), null);
+});
+
 test('dados corrompidos viram lista vazia', () => {
   const storage = memoryStorage();
-  storage.setItem('escalacao-da-selecao:usuario:viciado', '{quebrado');
-  assert.deepEqual(createStore({ mode: MODE.USER, username: 'viciado' }, { storage }).load().players, []);
+  storage.setItem('escalacao-da-selecao:usuario:viciados', '{quebrado');
+  assert.deepEqual(createStore({ mode: MODE.USER, username: 'viciados' }, { storage }).load().players, []);
 });

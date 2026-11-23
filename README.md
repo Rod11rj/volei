@@ -29,7 +29,7 @@ dia e a página sorteia times o mais parelhos possível.
 | Convidado | Fica só na memória da página. Recarregar ou sair apaga tudo. |
 | Usuário | Fica salva no `localStorage` do navegador, separada por usuário. |
 
-Usuário cadastrado: **viciado** (senha **viciado**).
+Os usuários ficam em `src/auth.js` (a senha não aparece no código, só o hash).
 
 > **Importante:** o site é estático e não tem servidor, então o login é verificado
 > no próprio navegador. Ele separa o modo convidado do modo com lista salva, mas
@@ -88,7 +88,6 @@ LICENSE             licença MIT
 ```bash
 npm install        # uma vez: instala o empacotador (esbuild)
 npm run build      # depois de alterar src/: gera dist/app.js
-npm run watch      # opcional: gera dist/app.js a cada alteração salva
 npm test           # roda os testes
 ```
 

@@ -1,30 +1,31 @@
 /* ==========================================================================
    Escalação da Seleção — estilos
    1. Tokens   2. Base   3. Layout   4. Componentes   5. Utilitários
-   Tema: vôlei de praia — areia, mar e sol. Claro e escuro via light-dark().
+   Tema: vôlei de praia — areia, mar e sol. Claro e escuro via variáveis + prefers-color-scheme
+   (sem light-dark(), que celulares mais antigos não suportam).
    ========================================================================== */
 
 /* 1. Tokens ---------------------------------------------------------------- */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
-  --color-bg: light-dark(#f8ecd0, #0e1d24);
-  --color-surface: light-dark(#fffaf0, #152a32);
-  --color-surface-soft: light-dark(#f5e3bd, #1b343d);
-  --color-ink: light-dark(#2e2216, #f3e9d6);
-  --color-muted: light-dark(#7c6a52, #b3a58d);
-  --color-line: light-dark(#ead6ad, #2a434c);
-  --color-sea: light-dark(#0a7f99, #139ab6);
-  --color-sea-ink: light-dark(#0a7f99, #7fdcef);
+  --color-bg: #f8ecd0;
+  --color-surface: #fffaf0;
+  --color-surface-soft: #f5e3bd;
+  --color-ink: #2e2216;
+  --color-muted: #7c6a52;
+  --color-line: #ead6ad;
+  --color-sea: #0a7f99;
+  --color-sea-ink: #0a7f99;
   --color-sun: #ffb627;
   --color-sun-edge: #e39a0c;
   --color-on-sun: #2e2216;
-  --color-male: light-dark(#0a7f99, #6fd6ea);
-  --color-female: light-dark(#de5236, #ff9a80);
-  --color-on-badge: light-dark(#fff, #0e1d24);
+  --color-male: #0a7f99;
+  --color-female: #de5236;
+  --color-on-badge: #fff;
   --color-danger: #c0262d;
-  --grain-a: light-dark(#ecd6a6, #17303a);
-  --grain-b: light-dark(#f1dfb8, #132830);
+  --grain-a: #ecd6a6;
+  --grain-b: #f1dfb8;
 
   --team-0: #ffb627; --team-1: #5ccbe3; --team-2: #ff8a6b; --team-3: #8fd9a3;
   --team-4: #f7d58a; --team-5: #c6b4f2; --team-6: #7fc8f0; --team-7: #ffa9c3;
@@ -38,8 +39,41 @@
   --gutter: max(4vw, 14px);
   --shadow-card: 0 10px 26px -18px rgba(90, 60, 20, .45);
 }
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
+/* Tema escuro: segue o aparelho, a menos que a página force o claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #0e1d24;
+    --color-surface: #152a32;
+    --color-surface-soft: #1b343d;
+    --color-ink: #f3e9d6;
+    --color-muted: #b3a58d;
+    --color-line: #2a434c;
+    --color-sea: #139ab6;
+    --color-sea-ink: #7fdcef;
+    --color-male: #6fd6ea;
+    --color-female: #ff9a80;
+    --color-on-badge: #0e1d24;
+    --grain-a: #17303a;
+    --grain-b: #132830;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0e1d24;
+  --color-surface: #152a32;
+  --color-surface-soft: #1b343d;
+  --color-ink: #f3e9d6;
+  --color-muted: #b3a58d;
+  --color-line: #2a434c;
+  --color-sea: #139ab6;
+  --color-sea-ink: #7fdcef;
+  --color-male: #6fd6ea;
+  --color-female: #ff9a80;
+  --color-on-badge: #0e1d24;
+  --grain-a: #17303a;
+  --grain-b: #132830;
+}
 
 /* 2. Base ------------------------------------------------------------------ */
 *, *::before, *::after { box-sizing: border-box; min-width: 0; }
@@ -173,20 +207,20 @@ fieldset { margin: 0; padding: 0; border: 0; }
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
 }
-.segmented label {
-  flex: 1;
+.segmented label { display: flex; flex: 1; cursor: pointer; }
+.segmented label + label { border-left: 1px solid var(--color-line); }
+.segmented span {
   display: grid;
+  flex: 1;
   place-items: center;
   min-height: var(--tap);
   padding: 0 12px;
   font-weight: 600;
   text-align: center;
-  cursor: pointer;
 }
-.segmented label + label { border-left: 1px solid var(--color-line); }
 .segmented input { position: absolute; opacity: 0; pointer-events: none; }
-.segmented label:has(input:checked) { color: #fff; background: var(--color-sea); }
-.segmented label:has(input:focus-visible) { outline: 3px solid var(--color-sun); outline-offset: -3px; }
+.segmented input:checked + span { color: #fff; background: var(--color-sea); }
+.segmented input:focus-visible + span { outline: 3px solid var(--color-sun); outline-offset: -3px; }
 
 /* Formulário de cadastro */
 .player-form {
@@ -324,6 +358,7 @@ fieldset { margin: 0; padding: 0; border: 0; }
 .entry {
   display: grid;
   place-items: center;
+  min-height: 100vh;
   min-height: 100svh;
   padding: 24px 16px;
   /* céu, sol, mar e areia — sem bola nem rede, para não competir com a quadra */

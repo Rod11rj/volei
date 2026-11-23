@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/main.js --bundle --format=iife --target=es2020 --legal-comments=none --banner:js=\"/* Gerado a partir de src/ por: npm run build. Nao edite este arquivo. */\" --outfile=dist/app.js",
-    "watch": "npm run build -- --watch",
-    "test": "node --test",
-    "start": "npx --yes serve ."
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"

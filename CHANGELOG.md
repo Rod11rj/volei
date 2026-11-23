@@ -7,12 +7,15 @@ projeto usa [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 - Tela de entrada com escolha entre convidado e usuário cadastrado, navegada por uma bola que voa até o lado escolhido da quadra (toque, setas do teclado ou deslizar).
-- Login local com o usuário `viciado`; senhas guardadas como hash SHA-256 com sal.
+- Login local; senhas guardadas como hash SHA-256 com sal. Listas salvas com o nome antigo de um usuário são transferidas para o nome novo.
 - Lista de jogadores salva por usuário; no modo convidado nada é salvo e a página avisa antes de sair.
 - Testes de login e de salvamento.
 
 ### Removido
 - Backup (copiar e importar) da lista de jogadores.
+
+### Corrigido
+- Cores do tema (claro e escuro) em navegadores de celular mais antigos, que não suportam `light-dark()` nem `:has()`.
 
 ### Alterado
 - A página abre com dois cliques no `index.html`: o código-fonte passou para `src/` e é reunido em `dist/app.js` por `npm run build` (esbuild).

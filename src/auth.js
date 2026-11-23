@@ -4,8 +4,7 @@
  * ATENÇÃO: o site é estático (GitHub Pages) e não tem servidor. A verificação
  * acontece no navegador, então este login NÃO protege dados — serve apenas para
  * separar o modo convidado (nada é salvo) do modo usuário (lista salva no
- * navegador, separada por usuário). Para contas de verdade, sincronizadas entre
- * aparelhos, é preciso um serviço de autenticação externo.
+ * navegador, separada por usuário).
  *
  * As senhas não ficam em texto puro: guarda-se o SHA-256 de `${salt}:${senha}`.
  * Para cadastrar outro usuário, gere sal e hash com:
@@ -14,20 +13,29 @@
 
 export const MODE = Object.freeze({ GUEST: 'guest', USER: 'user' });
 
-/** @type {ReadonlyArray<{ username: string, salt: string, hash: string }>} */
-export const USERS = Object.freeze([
+/**
+ * formerNames: nomes antigos do mesmo usuário; a lista salva com eles é
+ * transferida automaticamente no primeiro acesso com o nome novo.
+ * @type {ReadonlyArray<{ username: string, salt: string, hash: string, formerNames?: string[] }>}
+ */
+const USERS = Object.freeze([
   {
-    username: 'viciado',
-    salt: 'cbebad3520a37d606b4d2bbbf99a720b',
-    hash: '57e7f033d4120f13c189bfef4f0588c488892201e83137da8abcb39e822ae64b',
+    username: 'viciados',
+    salt: '09977729b2cb5e662871c5e747ee5171',
+    hash: '5acbc3794bf8b719d3feec8ab01bfe66d606966240f8844c4c9e97c66166ad43',
+    formerNames: ['viciado'],
   },
 ]);
 
 const SESSION_KEY = 'escalacao-da-selecao:sessao';
 
-export const normalizeUsername = (value) => String(value ?? '').trim().toLowerCase();
+const normalizeUsername = (value) => String(value ?? '').trim().toLowerCase();
 
-export async function sha256Hex(text) {
+/** Nomes antigos de um usuário, para migrar a lista salva. */
+export const formerNamesOf = (username) =>
+  USERS.find((u) => u.username === username)?.formerNames ?? [];
+
+async function sha256Hex(text) {
   const digest = await globalThis.crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
