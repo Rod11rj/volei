@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   SEX, TEAM_SIZE, balanceTeams, pickBench, planGame, spread, strength, swapPlayers,
-} from '../js/balancer.js';
+} from '../src/balancer.js';
 
 /** Gerador pseudoaleatório com semente, para testes reproduzíveis. */
 function seededRng(seed) {

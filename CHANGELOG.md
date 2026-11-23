@@ -15,6 +15,7 @@ projeto usa [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Backup (copiar e importar) da lista de jogadores.
 
 ### Alterado
+- A página abre com dois cliques no `index.html`: o código-fonte passou para `src/` e é reunido em `dist/app.js` por `npm run build` (esbuild).
 - A lista salva pela versão 1.0.0 passa automaticamente para o primeiro usuário que entrar.
 
 ## [1.0.0] - 2026-11-23

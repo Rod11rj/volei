@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MODE, clearSession, loadSession, saveSession, verifyCredentials } from '../js/auth.js';
+import { MODE, clearSession, loadSession, saveSession, verifyCredentials } from '../src/auth.js';
 import { memoryStorage } from './helpers.js';
 
 test('aceita o usuário cadastrado com a senha certa', async () => {

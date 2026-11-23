@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MODE } from '../js/auth.js';
-import { SEX } from '../js/balancer.js';
-import { createStore } from '../js/storage.js';
+import { MODE } from '../src/auth.js';
+import { SEX } from '../src/balancer.js';
+import { createStore } from '../src/storage.js';
 import { memoryStorage } from './helpers.js';
 
 const sampleState = () => ({

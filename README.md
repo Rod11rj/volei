@@ -29,6 +29,17 @@ dia e a página sorteia times o mais parelhos possível.
 | Convidado | Fica só na memória da página. Recarregar ou sair apaga tudo. |
 | Usuário | Fica salva no `localStorage` do navegador, separada por usuário. |
 
+Usuário cadastrado: **viciado** (senha **viciado**).
+
+> **Importante:** o site é estático e não tem servidor, então o login é verificado
+> no próprio navegador. Ele separa o modo convidado do modo com lista salva, mas
+> **não protege dados**: o código é público e as listas ficam no aparelho de quem
+> usa. Pelo mesmo motivo, a lista de um usuário não aparece em outros aparelhos.
+> Contas de verdade, sincronizadas entre aparelhos, exigiriam um serviço de
+> autenticação externo (por exemplo, Supabase ou Firebase).
+
+As senhas não ficam em texto puro no código: `src/auth.js` guarda o SHA-256 de
+`sal:senha`. O comentário no topo desse arquivo mostra como cadastrar outro usuário.
 
 ## Como o equilíbrio é calculado
 
@@ -50,16 +61,17 @@ dia e a página sorteia times o mais parelhos possível.
 ```
 index.html          esqueleto da página (sem estilo nem lógica)
 css/styles.css      estilos (tokens, base, layout, componentes)
-assets/praia.svg    ilustração do topo
-assets/favicon.svg  ícone
-js/main.js          ponto de entrada: sessão → tela de entrada → aplicação
-js/auth.js          usuários, verificação de senha e sessão
-js/entry.js         tela de entrada com a quadra e a bola
-js/balancer.js      algoritmo de equilíbrio (puro, sem DOM)
-js/storage.js       salvamento por usuário (convidado não salva)
-js/templates.js     geração do HTML a partir dos dados
-js/utils.js         funções utilitárias
-js/app.js           controlador: estado, eventos e renderização
+assets/             ilustração do topo e ícone
+src/                código-fonte JavaScript, em módulos:
+  main.js             ponto de entrada: sessão → tela de entrada → aplicação
+  auth.js             usuários, verificação de senha e sessão
+  entry.js            tela de entrada com a quadra e a bola
+  app.js              controlador: estado, eventos e renderização
+  balancer.js         algoritmo de equilíbrio (puro, sem DOM)
+  storage.js          salvamento por usuário (convidado não salva)
+  templates.js        geração do HTML a partir dos dados
+  utils.js            funções utilitárias
+dist/app.js         src/ reunido num único arquivo (gerado; é o que a página carrega)
 tests/              testes automatizados (algoritmo, login e salvamento)
 CITATION.cff        metadados de citação (GitHub)
 .zenodo.json        metadados do registro no Zenodo
@@ -67,23 +79,24 @@ CHANGELOG.md        histórico de versões
 LICENSE             licença MIT
 ```
 
-## Rodar localmente
+## Usar e desenvolver
 
-A página usa módulos JavaScript, que os navegadores não carregam a partir de
-`file://`. Sirva a pasta por HTTP:
+**Só usar:** abra o `index.html` com dois cliques. Não precisa instalar nada.
 
-```bash
-npm start            # equivale a: python3 -m http.server 8000
-# abra http://localhost:8000
-```
-
-## Testes
-
-Requer Node.js 20 ou superior; não há dependências para instalar.
+**Alterar o código** (requer Node.js 20 ou superior):
 
 ```bash
-npm test
+npm install        # uma vez: instala o empacotador (esbuild)
+npm run build      # depois de alterar src/: gera dist/app.js
+npm run watch      # opcional: gera dist/app.js a cada alteração salva
+npm test           # roda os testes
 ```
+
+O código fica em `src/`, dividido em módulos. O navegador não carrega módulos
+de páginas abertas direto do disco (`file://`), por isso o `npm run build`
+reúne tudo em `dist/app.js`, um script comum que funciona tanto com dois
+cliques quanto no GitHub Pages. **Sempre rode `npm run build` e envie o
+`dist/app.js` junto** depois de mexer em `src/`.
 
 ## Publicar no GitHub Pages
 

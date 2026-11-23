@@ -5,10 +5,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "python3 -m http.server 8000",
-    "test": "node --test"
+    "build": "esbuild src/main.js --bundle --format=iife --target=es2020 --legal-comments=none --banner:js=\"/* Gerado a partir de src/ por: npm run build. Nao edite este arquivo. */\" --outfile=dist/app.js",
+    "watch": "npm run build -- --watch",
+    "test": "node --test",
+    "start": "npx --yes serve ."
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   }
 }

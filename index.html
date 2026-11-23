@@ -11,16 +11,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/styles.css">
-  <script type="module" src="js/main.js"></script>
+  <script src="dist/app.js" defer></script>
 </head>
 <body>
   <!-- Tela de entrada ---------------------------------------------------- -->
   <section id="entry" class="entry" aria-labelledby="entry-title" hidden>
     <div class="entry__card">
       <h1 id="entry-title" class="entry__title">Escalação da Seleção</h1>
-      <p id="entry-help" class="entry__help">Escolha como entrar: toque em um lado da quadra, use as setas do teclado ou deslize o dedo.</p>
 
-      <div class="court" role="radiogroup" aria-labelledby="entry-help">
+      <div class="court" role="radiogroup" aria-label="Escolha como entrar: convidado ou usuário">
         <button type="button" class="court__side court__side--guest" role="radio" aria-checked="false" data-mode="guest" tabindex="0">
           <span class="court__label">Convidado</span>
           <span class="court__note">Nada fica salvo</span>
@@ -71,8 +70,6 @@
         <div class="panel__head">
           <h2 id="players-heading" class="panel__title">Jogadores</h2>
         </div>
-
-        <p id="guest-notice" class="notice" hidden>Modo convidado: a lista não será salva. Entre com um usuário para guardá-la.</p>
 
         <form id="player-form" class="player-form" autocomplete="off">
           <p id="form-title" class="field-label">Novo jogador</p>
