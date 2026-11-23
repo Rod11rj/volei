@@ -1,7 +1,6 @@
 # Escalação da Seleção
 
-<!-- Depois da primeira release, troque XXXXXXX pelo número do concept DOI do Zenodo -->
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24483330.svg)](https://doi.org/10.5281/zenodo.24483330)
 [![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
 
 Página web para montar times de vôlei de **4 jogadores** equilibrados em
@@ -64,7 +63,13 @@ LICENSE             licença MIT
 
 ## Como citar
 
-Se usar este software, cite-o pelo DOI do Zenodo. 
+Se usar este software, cite-o pelo DOI do Zenodo:
+
+> Almeida, R. (2026). *Escalação da Seleção: montagem de times de vôlei misto
+> equilibrados* (v1.1.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.24483330
+
+O DOI acima sempre leva à versão mais recente. O botão **Cite this repository**,
+na página do repositório, gera a referência em outros formatos (APA, BibTeX).
 
 ## Licença
 

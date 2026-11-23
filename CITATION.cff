@@ -6,10 +6,18 @@ authors:
   - given-names: "Rodrigo"
     family-names: "Almeida"
 version: 1.1.0
+doi: 10.5281/zenodo.24483330
 date-released: "2026-11-23"
 license: MIT
 repository-code: "https://github.com/Rod11rj/volei"
 url: "https://rod11rj.github.io/volei/"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24483330
+    description: "Concept DOI: todas as versões"
+  - type: doi
+    value: 10.5281/zenodo.24483331
+    description: "DOI da versão 1.1.0"
 abstract: >-
   Aplicação web que monta times de vôlei de quatro jogadores equilibrados em
   número de homens e mulheres e em habilidade. Cada jogador recebe uma nota de
