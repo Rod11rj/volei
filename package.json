@@ -1,0 +1,14 @@
+{
+  "name": "escalacao-da-selecao",
+  "version": "1.0.0",
+  "description": "Monta times de vôlei de 4 jogadores equilibrados em número de homens e mulheres e em habilidade.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

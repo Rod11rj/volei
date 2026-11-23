@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Monte times de vôlei de 4 jogadores equilibrados em número de homens e mulheres e em habilidade.">
+  <meta name="theme-color" content="#2fa9dc">
+  <title>Escalação da Seleção</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero__title">Escalação da Seleção</h1>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-labelledby="players-heading">
+      <div class="panel__head">
+        <h2 id="players-heading" class="panel__title">Jogadores</h2>
+      </div>
+
+      <form id="player-form" class="player-form" autocomplete="off">
+        <p id="form-title" class="field-label">Novo jogador</p>
+        <label class="visually-hidden" for="player-name">Nome</label>
+        <input id="player-name" name="name" type="text" class="input" placeholder="Nome" maxlength="40" required>
+
+        <fieldset class="field">
+          <legend class="field-label">Sexo</legend>
+          <div class="segmented">
+            <label><input type="radio" name="sex" value="male" checked>Homem</label>
+            <label><input type="radio" name="sex" value="female">Mulher</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="field-label">Nota de habilidade</legend>
+          <div class="segmented">
+            <label><input type="radio" name="rating" value="1">1</label>
+            <label><input type="radio" name="rating" value="2">2</label>
+            <label><input type="radio" name="rating" value="3" checked>3</label>
+            <label><input type="radio" name="rating" value="4">4</label>
+            <label><input type="radio" name="rating" value="5">5</label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button id="form-submit" type="submit" class="btn btn--primary">Adicionar</button>
+          <button id="form-cancel" type="button" class="btn" hidden>Cancelar</button>
+          <button id="form-delete" type="button" class="btn btn--danger" hidden>Excluir</button>
+        </div>
+      </form>
+
+      <div class="toolbar">
+        <label class="visually-hidden" for="search">Buscar jogador</label>
+        <input id="search" type="search" class="input toolbar__search" placeholder="Buscar nome">
+        <button id="select-all" type="button" class="btn">Todos</button>
+        <button id="select-none" type="button" class="btn">Nenhum</button>
+      </div>
+
+      <p id="summary" class="summary" aria-live="polite"></p>
+      <ul id="roster" class="roster"></ul>
+
+      <details class="backup">
+        <summary>Backup da lista</summary>
+        <p class="hint">Copie a lista para guardar ou levar para outro aparelho. Para restaurar, cole o texto abaixo e importe (substitui a lista atual).</p>
+        <div class="actions">
+          <button id="export" type="button" class="btn">Copiar lista</button>
+        </div>
+        <div class="actions">
+          <label class="visually-hidden" for="import-text">Texto do backup</label>
+          <textarea id="import-text" class="input" rows="3" placeholder="Cole aqui a lista copiada"></textarea>
+          <button id="import" type="button" class="btn">Importar</button>
+        </div>
+      </details>
+    </section>
+
+    <section id="teams-panel" class="panel" aria-labelledby="teams-heading">
+      <div class="panel__head">
+        <h2 id="teams-heading" class="panel__title">Times do dia</h2>
+        <button type="button" class="btn btn--sun hide-on-mobile" data-action="generate">Gerar times</button>
+      </div>
+
+      <div class="weight">
+        <label for="male-weight" class="weight__label">Peso da nota masculina: <span id="male-weight-value"></span></label>
+        <input id="male-weight" type="range" class="weight__range">
+        <small id="male-weight-hint" class="weight__hint"></small>
+      </div>
+
+      <div id="result" class="result" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="dock" aria-label="Ações rápidas">
+    <span id="dock-summary" class="dock__summary"></span>
+    <button type="button" class="btn btn--sun" data-action="generate">Gerar times</button>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="noscript">Esta página precisa de JavaScript para funcionar.</p></noscript>
+</body>
+</html>

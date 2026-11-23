@@ -1,2 +1,71 @@
-# volei
-Escalação de times para o jogo do final de semana
+# Escalação da Seleção
+
+Página web para montar times de vôlei de **4 jogadores** equilibrados em
+**número de homens e mulheres** e em **habilidade**.
+
+Você cadastra o elenco uma vez (nome, sexo e nota de 1 a 5), marca quem veio no
+dia e a página sorteia times o mais parelhos possível.
+
+## Como usar
+
+1. Cadastre os jogadores. Cada novo jogador já entra marcado como presente.
+2. Marque ou desmarque quem veio hoje (botões **Todos** / **Nenhum** ajudam).
+3. Toque em **Gerar times**. Cada novo clique gera outra combinação igualmente equilibrada.
+4. Se quiser, troque dois jogadores de time tocando em um e depois no outro.
+5. **Copiar times** gera um texto pronto para colar no grupo.
+
+Os dados ficam salvos no navegador do aparelho (`localStorage`). Use
+**Backup da lista** para copiar o elenco e restaurá-lo em outro aparelho.
+
+## Como o equilíbrio é calculado
+
+- **Força do jogador:** a nota da mulher vale a própria nota; a do homem é
+  multiplicada por um **peso** ajustável (padrão ×1,4). Assim, um homem nota 3
+  vale 4,2 pontos e uma mulher nota 3 vale 3.
+- **Sexo (regra fixa):** com *H* homens e *T* times, cada time recebe
+  ⌊H/T⌋ ou ⌈H/T⌉ homens; o restante das vagas é preenchido por mulheres.
+- **Reservas:** se o número de presentes não for múltiplo de 4, quem fica de
+  fora é sorteado no grupo (homens ou mulheres) em maior número.
+- **Habilidade:** o algoritmo gera 300 montagens aleatórias que respeitam a
+  regra de sexo e melhora cada uma por busca local, trocando pares de jogadores
+  entre times enquanto a soma dos desvios quadráticos em relação à média
+  diminuir. Entre as soluções com diferença até 0,25 ponto da melhor
+  encontrada, uma é sorteada, para que os times variem de uma rodada para outra.
+
+## Estrutura
+
+```
+index.html          esqueleto da página (sem estilo nem lógica)
+css/styles.css      estilos (tokens, base, layout, componentes)
+assets/praia.svg    ilustração do topo
+assets/favicon.svg  ícone
+js/balancer.js      algoritmo de equilíbrio (puro, sem DOM)
+js/storage.js       salvamento local, importação e exportação
+js/templates.js     geração do HTML a partir dos dados
+js/utils.js         funções utilitárias
+js/app.js           controlador: estado, eventos e renderização
+tests/              testes automatizados do algoritmo
+```
+
+## Rodar localmente
+
+A página usa módulos JavaScript, que os navegadores não carregam a partir de
+`file://`. Sirva a pasta por HTTP:
+
+```bash
+npm start            # equivale a: python3 -m http.server 8000
+# abra http://localhost:8000
+```
+
+## Testes
+
+Requer Node.js 20 ou superior; não há dependências para instalar.
+
+```bash
+npm test
+```
+
+## Publicar no GitHub Pages
+
+Em **Settings → Pages**, escolha *Deploy from a branch*, branch `main`, pasta
+`/ (root)`. A página fica disponível em `https://<usuario>.github.io/<repositorio>/`.
