@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2fa9dc"/><stop offset=".55" stop-color="#8fd6ef"/><stop offset="1" stop-color="#ffe3b0"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14a3c2"/><stop offset="1" stop-color="#0b7894"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7dfa6"/><stop offset="1" stop-color="#e6bd77"/>
+    </linearGradient>
+    <radialGradient id="sun">
+      <stop offset=".55" stop-color="#ffd84d"/><stop offset="1" stop-color="#ffd84d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="mesh" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M12 0H0V12" fill="none" stroke="#1e2a33" stroke-width="1.2" opacity=".55"/>
+    </pattern>
+  </defs>
+
+  <!-- céu e sol -->
+  <rect width="1200" height="320" fill="url(#sky)"/>
+  <circle cx="1150" cy="52" r="70" fill="url(#sun)"/>
+  <circle cx="1150" cy="52" r="34" fill="#ffe27a"/>
+
+  <!-- mar -->
+  <path d="M0 190Q300 182 600 188T1200 186V236H0Z" fill="url(#sea)"/>
+  <path d="M90 205q20-6 40 0M330 214q20-6 40 0M520 202q18-5 36 0M760 212q20-6 40 0M1000 204q18-5 36 0"
+        stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".75"/>
+
+  <!-- areia -->
+  <path d="M0 232Q250 214 520 226T1200 220V320H0Z" fill="url(#sand)"/>
+  <g fill="#d9a85f" opacity=".5">
+    <circle cx="160" cy="280" r="2"/><circle cx="420" cy="300" r="2"/><circle cx="610" cy="268" r="1.6"/>
+    <circle cx="980" cy="296" r="2"/><circle cx="1130" cy="262" r="1.6"/>
+  </g>
+  <g fill="#b98a48">
+    <ellipse cx="1040" cy="292" rx="26" ry="5" opacity=".45"/>
+    <ellipse cx="704" cy="268" rx="14" ry="3" opacity=".5"/>
+    <ellipse cx="1124" cy="262" rx="14" ry="3" opacity=".5"/>
+  </g>
+
+  <!-- rede -->
+  <rect x="700" y="128" width="8" height="140" rx="3" fill="#f2f2f2"/>
+  <rect x="1120" y="122" width="8" height="140" rx="3" fill="#f2f2f2"/>
+  <path d="M708 140L1120 134V190L708 196Z" fill="url(#mesh)"/>
+  <path d="M708 140L1120 134" stroke="#fff" stroke-width="7"/>
+  <path d="M708 196L1120 190" stroke="#fff" stroke-width="3"/>
+
+  <!-- bola -->
+  <g transform="translate(1040 96) rotate(-20)">
+    <circle r="22" fill="#ffd23f"/>
+    <path d="M-22 0Q0-14 22 0M-14-17Q4 0 -2 22M8-20Q-6 4 18 13" fill="none" stroke="#1f7fd0" stroke-width="5"/>
+    <circle r="22" fill="none" stroke="#c48f00" stroke-width="1.5"/>
+  </g>
+  <path d="M1076 74q14-4 26-14M1072 86q16 0 30-6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".8"/>
+</svg>

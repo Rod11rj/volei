@@ -1,0 +1,367 @@
+/* ==========================================================================
+   Escalação da Seleção — estilos
+   1. Tokens   2. Base   3. Layout   4. Componentes   5. Utilitários
+   Tema: vôlei de praia — areia, mar e sol. Claro e escuro via light-dark().
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+:root {
+  color-scheme: light dark;
+
+  --color-bg: light-dark(#f8ecd0, #0e1d24);
+  --color-surface: light-dark(#fffaf0, #152a32);
+  --color-surface-soft: light-dark(#f5e3bd, #1b343d);
+  --color-ink: light-dark(#2e2216, #f3e9d6);
+  --color-muted: light-dark(#7c6a52, #b3a58d);
+  --color-line: light-dark(#ead6ad, #2a434c);
+  --color-sea: light-dark(#0a7f99, #139ab6);
+  --color-sea-ink: light-dark(#0a7f99, #7fdcef);
+  --color-sun: #ffb627;
+  --color-sun-edge: #e39a0c;
+  --color-on-sun: #2e2216;
+  --color-male: light-dark(#0a7f99, #6fd6ea);
+  --color-female: light-dark(#de5236, #ff9a80);
+  --color-on-badge: light-dark(#fff, #0e1d24);
+  --color-danger: #c0262d;
+  --grain-a: light-dark(#ecd6a6, #17303a);
+  --grain-b: light-dark(#f1dfb8, #132830);
+
+  --team-0: #ffb627; --team-1: #5ccbe3; --team-2: #ff8a6b; --team-3: #8fd9a3;
+  --team-4: #f7d58a; --team-5: #c6b4f2; --team-6: #7fc8f0; --team-7: #ffa9c3;
+
+  --font-display: "Barlow Condensed", Barlow, system-ui, sans-serif;
+  --font-body: Barlow, system-ui, sans-serif;
+
+  --radius: 10px;
+  --radius-lg: 18px;
+  --tap: 44px;
+  --gutter: max(4vw, 14px);
+  --shadow-card: 0 10px 26px -18px rgba(90, 60, 20, .45);
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* 2. Base ------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; min-width: 0; }
+
+body {
+  margin: 0;
+  color: var(--color-ink);
+  font: 16px/1.5 var(--font-body);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(var(--grain-a) 1px, transparent 1.4px),
+    radial-gradient(var(--grain-b) 1px, transparent 1.4px);
+  background-size: 18px 18px, 26px 26px;
+  background-position: 0 0, 9px 13px;
+  overflow-x: clip;
+}
+
+h1, h2, h3 { margin: 0; font-family: var(--font-display); line-height: 1.05; text-wrap: balance; }
+
+fieldset { margin: 0; padding: 0; border: 0; }
+
+:focus-visible { outline: 3px solid var(--color-sun); outline-offset: 2px; }
+
+/* 3. Layout ---------------------------------------------------------------- */
+.hero {
+  min-height: clamp(190px, 26vw, 300px);
+  padding: clamp(22px, 4vw, 44px) max(5vw, 16px);
+  color: #fff;
+  background: #8fd6ef url("../assets/praia.svg") right bottom / cover no-repeat;
+}
+.hero__title {
+  max-width: 9em;
+  font-size: clamp(38px, 6.5vw, 64px);
+  text-shadow: 0 2px 0 rgba(8, 70, 95, .55), 0 4px 18px rgba(8, 70, 95, .35);
+}
+
+.layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1240px;
+  margin: -34px auto 0;
+  padding: 0 var(--gutter) 110px;
+}
+
+/* 4. Componentes ----------------------------------------------------------- */
+
+/* Painel */
+.panel {
+  padding: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.panel__title { font-size: 30px; }
+
+/* Botões */
+.btn {
+  min-height: var(--tap);
+  padding: 0 16px;
+  font: 600 15px var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.btn--primary { color: #fff; background: var(--color-sea); border-color: var(--color-sea); }
+.btn--sun {
+  padding: 0 22px;
+  font: 700 20px var(--font-display);
+  color: var(--color-on-sun);
+  background: var(--color-sun);
+  border-color: var(--color-sun-edge);
+  border-radius: 999px;
+}
+.btn--ghost { background: transparent; }
+.btn--small { min-height: 36px; padding: 0 10px; font-size: 13px; }
+.btn--danger { color: var(--color-danger); }
+.btn[data-armed] { color: #fff; background: var(--color-danger); border-color: var(--color-danger); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* Campos */
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+}
+.field { display: grid; gap: 6px; }
+.field-label { margin: 0; font-size: 13px; font-weight: 600; color: var(--color-muted); }
+
+.segmented {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+}
+.segmented label {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: var(--tap);
+  padding: 0 12px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+.segmented label + label { border-left: 1px solid var(--color-line); }
+.segmented input { position: absolute; opacity: 0; pointer-events: none; }
+.segmented label:has(input:checked) { color: #fff; background: var(--color-sea); }
+.segmented label:has(input:focus-visible) { outline: 3px solid var(--color-sun); outline-offset: -3px; }
+
+/* Formulário de cadastro */
+.player-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: var(--color-surface-soft);
+  border-radius: 12px;
+}
+
+/* Busca e seleção */
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 8px; }
+.toolbar__search { flex: 1 1 160px; width: auto; }
+.summary { margin: 6px 0 10px; font-size: 14px; color: var(--color-muted); }
+
+/* Lista de jogadores */
+.roster { max-height: 560px; margin: 0; padding: 0; overflow: auto; list-style: none; }
+.roster__item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 0;
+  border-top: 1px solid var(--color-line);
+}
+.roster__label {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 4px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.roster__check { flex: none; width: 22px; height: 22px; accent-color: var(--color-sea); }
+.roster__name { flex: 1; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.roster__empty { padding: 22px 10px; color: var(--color-muted); text-align: center; }
+
+/* Selo de sexo e nota */
+.badge {
+  flex: none;
+  padding: 2px 7px;
+  font: 700 12px var(--font-body);
+  color: var(--color-on-badge);
+  border-radius: 999px;
+}
+.badge--male { background: var(--color-male); }
+.badge--female { background: var(--color-female); }
+
+.rating { display: flex; flex: none; gap: 3px; }
+.rating__dot { width: 9px; height: 9px; background: var(--color-line); border-radius: 50%; }
+.rating__dot.is-on { background: var(--color-sun); box-shadow: inset 0 0 0 1px #d48a00; }
+
+/* Backup */
+.backup { margin-top: 16px; font-size: 14px; }
+.backup summary { min-height: 32px; color: var(--color-muted); cursor: pointer; }
+.backup .actions { margin-top: 8px; }
+
+/* Peso masculino */
+.weight {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--color-surface-soft);
+  border-radius: 12px;
+}
+.weight__label { font-weight: 700; }
+.weight__range { width: 100%; height: 32px; accent-color: var(--color-sea); }
+.weight__hint { color: var(--color-muted); }
+
+/* Resultado */
+.result__empty { padding: 22px 10px; color: var(--color-muted); text-align: center; }
+.result__diff { margin: 4px 0 14px; }
+.result__diff strong { font: 700 34px var(--font-display); color: var(--color-sea-ink); }
+.result .actions { margin-top: 14px; }
+
+.teams { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+
+.team {
+  --team-color: var(--team-0);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+.team--c1 { --team-color: var(--team-1); }
+.team--c2 { --team-color: var(--team-2); }
+.team--c3 { --team-color: var(--team-3); }
+.team--c4 { --team-color: var(--team-4); }
+.team--c5 { --team-color: var(--team-5); }
+.team--c6 { --team-color: var(--team-6); }
+.team--c7 { --team-color: var(--team-7); }
+
+.team__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 14px;
+  color: var(--color-on-sun);
+  background: var(--team-color);
+}
+.team__title { font-size: 24px; }
+.team__score { font: 700 22px var(--font-display); white-space: nowrap; }
+.team__meta { margin: 0; padding: 8px 14px 0; font-size: 13px; color: var(--color-muted); }
+.team__list { margin: 0; padding: 6px 8px 10px; list-style: none; }
+.team__player {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 6px;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.team__player:hover { background: var(--color-surface-soft); }
+.team__player.is-picked { color: var(--color-on-sun); background: var(--color-sun); }
+.team__name { flex: 1; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+
+.bench {
+  margin-top: 14px;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px dashed var(--color-line);
+  border-radius: 12px;
+}
+.bench small { display: block; color: var(--color-muted); }
+
+.hint { margin: 10px 0 0; font-size: 13px; color: var(--color-muted); }
+
+/* Barra fixa (celular) */
+.dock {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 5;
+  display: none;
+  gap: 10px;
+  align-items: center;
+  padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-line);
+}
+.dock__summary { flex: 1; font-size: 14px; color: var(--color-muted); }
+
+/* Aviso temporário */
+.toast {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  z-index: 10;
+  padding: 10px 16px;
+  font-weight: 600;
+  color: var(--color-bg);
+  background: var(--color-ink);
+  border-radius: var(--radius);
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity .2s;
+  pointer-events: none;
+}
+.toast.is-visible { opacity: 1; }
+
+.noscript { padding: 16px var(--gutter); }
+
+/* 5. Utilitários e responsividade ----------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .roster { max-height: none; }
+  .dock { display: flex; }
+  .hide-on-mobile { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero { min-height: 250px; padding-top: 20px; }
+  .hero__title { font-size: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { transition: none; }
+}
