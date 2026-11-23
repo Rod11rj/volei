@@ -1,0 +1,22 @@
+{
+  "title": "Escalação da Seleção: montagem de times de vôlei misto equilibrados",
+  "upload_type": "software",
+  "description": "<p>Aplicação web que monta times de vôlei de quatro jogadores equilibrados em número de homens e mulheres e em habilidade.</p><p>Cada jogador recebe uma nota de 1 a 5; a nota masculina é multiplicada por um peso ajustável (padrão 1,4). Cada time recebe ⌊H/T⌋ ou ⌈H/T⌉ homens, e a diferença de força entre os times é minimizada por 300 reinícios aleatórios seguidos de busca local por trocas de pares. Entre as soluções próximas da melhor, uma é sorteada para variar os times entre rodadas.</p><p>Escrita em HTML, CSS e JavaScript sem dependências; o algoritmo é um módulo independente coberto por testes automatizados.</p>",
+  "creators": [
+    {
+      "name": "Antonio, Rodrigo"
+    }
+  ],
+  "keywords": [
+    "vôlei",
+    "volleyball",
+    "formação de times",
+    "team balancing",
+    "otimização combinatória",
+    "busca local",
+    "aplicação web"
+  ],
+  "license": "MIT",
+  "language": "por",
+  "access_right": "open"
+}

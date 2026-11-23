@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Se você usar este software, por favor cite-o conforme abaixo."
+title: "Escalação da Seleção: montagem de times de vôlei misto equilibrados"
+type: software
+authors:
+  - given-names: "Rodrigo"
+    family-names: "Antonio"
+version: 1.0.0
+date-released: "2026-11-23"
+license: MIT
+repository-code: "https://github.com/Rod11rj/volei"
+url: "https://rod11rj.github.io/volei/"
+abstract: >-
+  Aplicação web que monta times de vôlei de quatro jogadores equilibrados em
+  número de homens e mulheres e em habilidade. Cada jogador recebe uma nota de
+  1 a 5; a nota masculina é multiplicada por um peso ajustável. O algoritmo
+  distribui os homens de forma uniforme entre os times e minimiza a diferença
+  de força entre eles por reinícios aleatórios seguidos de busca local por
+  trocas de pares.
+keywords:
+  - vôlei
+  - volleyball
+  - formação de times
+  - team balancing
+  - otimização combinatória
+  - busca local
+  - aplicação web

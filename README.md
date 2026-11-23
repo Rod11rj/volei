@@ -1,5 +1,9 @@
 # Escalação da Seleção
 
+<!-- Depois da primeira release, troque XXXXXXX pelo número do concept DOI do Zenodo -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
+
 Página web para montar times de vôlei de **4 jogadores** equilibrados em
 **número de homens e mulheres** e em **habilidade**.
 
@@ -45,6 +49,10 @@ js/templates.js     geração do HTML a partir dos dados
 js/utils.js         funções utilitárias
 js/app.js           controlador: estado, eventos e renderização
 tests/              testes automatizados do algoritmo
+CITATION.cff        metadados de citação (GitHub)
+.zenodo.json        metadados do registro no Zenodo
+CHANGELOG.md        histórico de versões
+LICENSE             licença MIT
 ```
 
 ## Rodar localmente
@@ -69,3 +77,13 @@ npm test
 
 Em **Settings → Pages**, escolha *Deploy from a branch*, branch `main`, pasta
 `/ (root)`. A página fica disponível em `https://<usuario>.github.io/<repositorio>/`.
+
+## Como citar
+
+Se usar este software, cite-o pelo DOI do Zenodo. O botão **Cite this repository**,
+na página do repositório no GitHub, gera a referência em APA e BibTeX a partir
+do arquivo [`CITATION.cff`](CITATION.cff).
+
+## Licença
+
+Distribuído sob a licença MIT. Veja [`LICENSE`](LICENSE).
