@@ -7,8 +7,6 @@
 Página web para montar times de vôlei de **4 jogadores** equilibrados em
 **número de homens e mulheres** e em **habilidade**.
 
-Você cadastra o elenco uma vez (nome, sexo e nota de 1 a 5), marca quem veio no
-dia e a página sorteia times o mais parelhos possível.
 
 ## Como usar
 
