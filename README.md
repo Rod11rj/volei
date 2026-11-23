@@ -12,14 +12,34 @@ dia e a página sorteia times o mais parelhos possível.
 
 ## Como usar
 
-1. Cadastre os jogadores. Cada novo jogador já entra marcado como presente.
-2. Marque ou desmarque quem veio hoje (botões **Todos** / **Nenhum** ajudam).
-3. Toque em **Gerar times**. Cada novo clique gera outra combinação igualmente equilibrada.
-4. Se quiser, troque dois jogadores de time tocando em um e depois no outro.
-5. **Copiar times** gera um texto pronto para colar no grupo.
+1. Na tela de entrada, escolha um lado da quadra: a bola voa até ele. Funciona
+   com toque, clique, setas do teclado ou deslizando o dedo.
+   - **Convidado (esquerda):** nada é salvo; ao sair ou recarregar, a lista some.
+   - **Usuário (direita):** entre com usuário e senha; a lista fica salva.
+2. Cadastre os jogadores. Cada novo jogador já entra marcado como presente.
+3. Marque ou desmarque quem veio hoje (botões **Todos** / **Nenhum** ajudam).
+4. Toque em **Gerar times**. Cada novo clique gera outra combinação igualmente equilibrada.
+5. Se quiser, troque dois jogadores de time tocando em um e depois no outro.
+6. **Copiar times** gera um texto pronto para colar no grupo.
 
-Os dados ficam salvos no navegador do aparelho (`localStorage`). Use
-**Backup da lista** para copiar o elenco e restaurá-lo em outro aparelho.
+## Acesso e armazenamento
+
+| Modo | O que acontece com a lista |
+|---|---|
+| Convidado | Fica só na memória da página. Recarregar ou sair apaga tudo. |
+| Usuário | Fica salva no `localStorage` do navegador, separada por usuário. |
+
+Usuário cadastrado: **viciado** (senha **viciado**).
+
+> **Importante:** o site é estático e não tem servidor, então o login é verificado
+> no próprio navegador. Ele separa o modo convidado do modo com lista salva, mas
+> **não protege dados**: o código é público e as listas ficam no aparelho de quem
+> usa. Pelo mesmo motivo, a lista de um usuário não aparece em outros aparelhos.
+> Contas de verdade, sincronizadas entre aparelhos, exigiriam um serviço de
+> autenticação externo (por exemplo, Supabase ou Firebase).
+
+As senhas não ficam em texto puro no código: `js/auth.js` guarda o SHA-256 de
+`sal:senha`. O comentário no topo desse arquivo mostra como cadastrar outro usuário.
 
 ## Como o equilíbrio é calculado
 
@@ -43,12 +63,15 @@ index.html          esqueleto da página (sem estilo nem lógica)
 css/styles.css      estilos (tokens, base, layout, componentes)
 assets/praia.svg    ilustração do topo
 assets/favicon.svg  ícone
+js/main.js          ponto de entrada: sessão → tela de entrada → aplicação
+js/auth.js          usuários, verificação de senha e sessão
+js/entry.js         tela de entrada com a quadra e a bola
 js/balancer.js      algoritmo de equilíbrio (puro, sem DOM)
-js/storage.js       salvamento local, importação e exportação
+js/storage.js       salvamento por usuário (convidado não salva)
 js/templates.js     geração do HTML a partir dos dados
 js/utils.js         funções utilitárias
 js/app.js           controlador: estado, eventos e renderização
-tests/              testes automatizados do algoritmo
+tests/              testes automatizados (algoritmo, login e salvamento)
 CITATION.cff        metadados de citação (GitHub)
 .zenodo.json        metadados do registro no Zenodo
 CHANGELOG.md        histórico de versões

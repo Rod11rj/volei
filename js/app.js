@@ -1,9 +1,11 @@
 /**
  * Controlador da página: guarda o estado, liga eventos e chama a renderização.
- * Regras de negócio ficam em balancer.js; HTML gerado, em templates.js.
+ * Regras de negócio ficam em balancer.js; HTML gerado, em templates.js;
+ * gravação, em storage.js. Iniciado por main.js com a sessão escolhida.
  */
+import { MODE, clearSession } from './auth.js';
 import { MIN_TEAMS, TEAM_SIZE, balanceTeams, planGame, swapPlayers } from './balancer.js';
-import { MALE_WEIGHT, loadState, parsePlayers, saveState, serializePlayers } from './storage.js';
+import { MALE_WEIGHT, createStore } from './storage.js';
 import * as view from './templates.js';
 import { cleanName, createId, formatNumber, normalizeText } from './utils.js';
 
@@ -22,9 +24,9 @@ const dom = {
   roster: $('#roster'),
   summary: $('#summary'),
   dockSummary: $('#dock-summary'),
-  exportButton: $('#export'),
-  importText: $('#import-text'),
-  importButton: $('#import'),
+  sessionName: $('#session-name'),
+  logout: $('#logout'),
+  guestNotice: $('#guest-notice'),
   weight: $('#male-weight'),
   weightValue: $('#male-weight-value'),
   weightHint: $('#male-weight-hint'),
@@ -34,8 +36,14 @@ const dom = {
   toast: $('#toast'),
 };
 
+/** Definidos em startApp(), conforme a sessão. */
+let store;
+let session;
 const state = {
-  ...loadState(),
+  players: [],
+  maleWeight: MALE_WEIGHT.default,
+  selected: new Set(),
+  result: null,
   editingId: null,
   query: '',
   pickedId: null,
@@ -55,7 +63,7 @@ function resolvedResult() {
 }
 
 function persist() {
-  if (!saveState(state)) showToast('Não foi possível salvar neste navegador');
+  if (!store.save(state)) showToast('Não foi possível salvar neste navegador');
 }
 
 /* ---------- Renderização ---------- */
@@ -232,7 +240,7 @@ function setSelection(selectAll) {
   renderRoster();
 }
 
-/* ---------- Backup ---------- */
+/* ---------- Área de transferência ---------- */
 
 async function copyToClipboard(text) {
   try {
@@ -243,40 +251,29 @@ async function copyToClipboard(text) {
   }
 }
 
-async function handleExport() {
-  const text = serializePlayers(state.players);
-  if (await copyToClipboard(text)) {
-    showToast('Lista copiada');
+/* ---------- Sessão ---------- */
+
+function renderSession() {
+  const guest = session.mode === MODE.GUEST;
+  dom.sessionName.textContent = guest ? 'Convidado' : session.username;
+  dom.guestNotice.hidden = !guest;
+}
+
+function handleLogout() {
+  const leave = () => {
+    clearSession();
+    location.reload();
+  };
+  if (session.mode === MODE.GUEST && state.players.length) {
+    confirmTwice(dom.logout, 'Sair e perder a lista?', leave);
   } else {
-    dom.importText.value = text;
-    dom.importText.select();
-    showToast('Copie o texto selecionado');
+    leave();
   }
 }
 
-function handleImport() {
-  let players;
-  try {
-    players = parsePlayers(dom.importText.value);
-  } catch {
-    disarm(dom.importButton);
-    showToast('Texto inválido');
-    return;
-  }
-  if (!players.length) {
-    disarm(dom.importButton);
-    showToast('Nenhum jogador válido no texto');
-    return;
-  }
-  confirmTwice(dom.importButton, `Substituir por ${players.length}?`, () => {
-    state.players = players;
-    state.selected = new Set();
-    state.result = null;
-    dom.importText.value = '';
-    persist();
-    renderAll();
-    showToast(`${players.length} jogadores importados`);
-  });
+/** Convidado com jogadores cadastrados: o navegador pede confirmação antes de sair. */
+function warnBeforeLeaving(event) {
+  if (session.mode === MODE.GUEST && state.players.length) event.preventDefault();
 }
 
 /* ---------- Times ---------- */
@@ -340,9 +337,8 @@ function bindEvents() {
   dom.selectAll.addEventListener('click', () => setSelection(true));
   dom.selectNone.addEventListener('click', () => setSelection(false));
 
-  dom.exportButton.addEventListener('click', handleExport);
-  dom.importButton.addEventListener('click', handleImport);
-  dom.importText.addEventListener('input', () => disarm(dom.importButton));
+  dom.logout.addEventListener('click', handleLogout);
+  window.addEventListener('beforeunload', warnBeforeLeaving);
 
   dom.weight.addEventListener('input', (e) => {
     state.maleWeight = Number(e.target.value);
@@ -355,14 +351,20 @@ function bindEvents() {
   dom.result.addEventListener('click', handleResultClick);
 }
 
-function init() {
+/**
+ * @param {{ mode: string, username?: string }} activeSession
+ */
+export function startApp(activeSession) {
+  session = activeSession;
+  store = createStore(session);
+  Object.assign(state, store.load());
+
   Object.assign(dom.weight, {
     min: MALE_WEIGHT.min,
     max: MALE_WEIGHT.max,
     step: MALE_WEIGHT.step,
   });
   bindEvents();
+  renderSession();
   renderAll();
 }
-
-init();

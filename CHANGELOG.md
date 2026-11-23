@@ -3,6 +3,20 @@
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 projeto usa [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.1.0] - 2026-11-23
+
+### Adicionado
+- Tela de entrada com escolha entre convidado e usuário cadastrado, navegada por uma bola que voa até o lado escolhido da quadra (toque, setas do teclado ou deslizar).
+- Login local com o usuário `viciado`; senhas guardadas como hash SHA-256 com sal.
+- Lista de jogadores salva por usuário; no modo convidado nada é salvo e a página avisa antes de sair.
+- Testes de login e de salvamento.
+
+### Removido
+- Backup (copiar e importar) da lista de jogadores.
+
+### Alterado
+- A lista salva pela versão 1.0.0 passa automaticamente para o primeiro usuário que entrar.
+
 ## [1.0.0] - 2026-11-23
 
 ### Adicionado

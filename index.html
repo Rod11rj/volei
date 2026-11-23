@@ -11,93 +11,132 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/styles.css">
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 <body>
-  <header class="hero">
-    <h1 class="hero__title">Escalação da Seleção</h1>
-  </header>
+  <!-- Tela de entrada ---------------------------------------------------- -->
+  <section id="entry" class="entry" aria-labelledby="entry-title" hidden>
+    <div class="entry__card">
+      <h1 id="entry-title" class="entry__title">Escalação da Seleção</h1>
+      <p id="entry-help" class="entry__help">Escolha como entrar: toque em um lado da quadra, use as setas do teclado ou deslize o dedo.</p>
 
-  <main class="layout">
-    <section class="panel" aria-labelledby="players-heading">
-      <div class="panel__head">
-        <h2 id="players-heading" class="panel__title">Jogadores</h2>
+      <div class="court" role="radiogroup" aria-labelledby="entry-help">
+        <button type="button" class="court__side court__side--guest" role="radio" aria-checked="false" data-mode="guest" tabindex="0">
+          <span class="court__label">Convidado</span>
+          <span class="court__note">Nada fica salvo</span>
+        </button>
+        <button type="button" class="court__side court__side--user" role="radio" aria-checked="false" data-mode="user" tabindex="-1">
+          <span class="court__label">Usuário</span>
+          <span class="court__note">Lista salva</span>
+        </button>
+        <span class="court__net" aria-hidden="true"></span>
+        <span class="court__shadow" aria-hidden="true"></span>
+        <span class="court__ball" aria-hidden="true">
+          <img class="court__ball-art" src="assets/favicon.svg" alt="" width="52" height="52">
+        </span>
       </div>
 
-      <form id="player-form" class="player-form" autocomplete="off">
-        <p id="form-title" class="field-label">Novo jogador</p>
-        <label class="visually-hidden" for="player-name">Nome</label>
-        <input id="player-name" name="name" type="text" class="input" placeholder="Nome" maxlength="40" required>
+      <div id="entry-guest" class="entry__panel" hidden>
+        <p class="hint">Como convidado, a lista de jogadores existe só enquanto a página estiver aberta. Ao sair ou recarregar, ela é apagada.</p>
+        <button id="guest-enter" type="button" class="btn btn--sun btn--block">Entrar como convidado</button>
+      </div>
 
-        <fieldset class="field">
-          <legend class="field-label">Sexo</legend>
-          <div class="segmented">
-            <label><input type="radio" name="sex" value="male" checked>Homem</label>
-            <label><input type="radio" name="sex" value="female">Mulher</label>
+      <div id="entry-user" class="entry__panel" hidden>
+        <form id="login-form" class="login" autocomplete="on">
+          <label class="field-label" for="login-user">Usuário</label>
+          <input id="login-user" name="username" type="text" class="input" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+          <label class="field-label" for="login-pass">Senha</label>
+          <input id="login-pass" name="password" type="password" class="input" autocomplete="current-password" required>
+          <p id="login-error" class="login__error" role="alert"></p>
+          <button type="submit" class="btn btn--sun btn--block">Entrar</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aplicação ---------------------------------------------------------- -->
+  <div id="app" hidden>
+    <header class="hero">
+      <div class="hero__bar">
+        <h1 class="hero__title">Escalação da Seleção</h1>
+        <div class="session">
+          <span class="session__name" id="session-name"></span>
+          <button id="logout" type="button" class="btn btn--small session__logout">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" aria-labelledby="players-heading">
+        <div class="panel__head">
+          <h2 id="players-heading" class="panel__title">Jogadores</h2>
+        </div>
+
+        <p id="guest-notice" class="notice" hidden>Modo convidado: a lista não será salva. Entre com um usuário para guardá-la.</p>
+
+        <form id="player-form" class="player-form" autocomplete="off">
+          <p id="form-title" class="field-label">Novo jogador</p>
+          <label class="visually-hidden" for="player-name">Nome</label>
+          <input id="player-name" name="name" type="text" class="input" placeholder="Nome" maxlength="40" required>
+
+          <fieldset class="field">
+            <legend class="field-label">Sexo</legend>
+            <div class="segmented">
+              <label><input type="radio" name="sex" value="male" checked>Homem</label>
+              <label><input type="radio" name="sex" value="female">Mulher</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend class="field-label">Nota de habilidade</legend>
+            <div class="segmented">
+              <label><input type="radio" name="rating" value="1">1</label>
+              <label><input type="radio" name="rating" value="2">2</label>
+              <label><input type="radio" name="rating" value="3" checked>3</label>
+              <label><input type="radio" name="rating" value="4">4</label>
+              <label><input type="radio" name="rating" value="5">5</label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button id="form-submit" type="submit" class="btn btn--primary">Adicionar</button>
+            <button id="form-cancel" type="button" class="btn" hidden>Cancelar</button>
+            <button id="form-delete" type="button" class="btn btn--danger" hidden>Excluir</button>
           </div>
-        </fieldset>
+        </form>
 
-        <fieldset class="field">
-          <legend class="field-label">Nota de habilidade</legend>
-          <div class="segmented">
-            <label><input type="radio" name="rating" value="1">1</label>
-            <label><input type="radio" name="rating" value="2">2</label>
-            <label><input type="radio" name="rating" value="3" checked>3</label>
-            <label><input type="radio" name="rating" value="4">4</label>
-            <label><input type="radio" name="rating" value="5">5</label>
-          </div>
-        </fieldset>
-
-        <div class="actions">
-          <button id="form-submit" type="submit" class="btn btn--primary">Adicionar</button>
-          <button id="form-cancel" type="button" class="btn" hidden>Cancelar</button>
-          <button id="form-delete" type="button" class="btn btn--danger" hidden>Excluir</button>
+        <div class="toolbar">
+          <label class="visually-hidden" for="search">Buscar jogador</label>
+          <input id="search" type="search" class="input toolbar__search" placeholder="Buscar nome">
+          <button id="select-all" type="button" class="btn">Todos</button>
+          <button id="select-none" type="button" class="btn">Nenhum</button>
         </div>
-      </form>
 
-      <div class="toolbar">
-        <label class="visually-hidden" for="search">Buscar jogador</label>
-        <input id="search" type="search" class="input toolbar__search" placeholder="Buscar nome">
-        <button id="select-all" type="button" class="btn">Todos</button>
-        <button id="select-none" type="button" class="btn">Nenhum</button>
-      </div>
+        <p id="summary" class="summary" aria-live="polite"></p>
+        <ul id="roster" class="roster"></ul>
 
-      <p id="summary" class="summary" aria-live="polite"></p>
-      <ul id="roster" class="roster"></ul>
+      </section>
 
-      <details class="backup">
-        <summary>Backup da lista</summary>
-        <p class="hint">Copie a lista para guardar ou levar para outro aparelho. Para restaurar, cole o texto abaixo e importe (substitui a lista atual).</p>
-        <div class="actions">
-          <button id="export" type="button" class="btn">Copiar lista</button>
+      <section id="teams-panel" class="panel" aria-labelledby="teams-heading">
+        <div class="panel__head">
+          <h2 id="teams-heading" class="panel__title">Times do dia</h2>
+          <button type="button" class="btn btn--sun hide-on-mobile" data-action="generate">Gerar times</button>
         </div>
-        <div class="actions">
-          <label class="visually-hidden" for="import-text">Texto do backup</label>
-          <textarea id="import-text" class="input" rows="3" placeholder="Cole aqui a lista copiada"></textarea>
-          <button id="import" type="button" class="btn">Importar</button>
+
+        <div class="weight">
+          <label for="male-weight" class="weight__label">Peso da nota masculina: <span id="male-weight-value"></span></label>
+          <input id="male-weight" type="range" class="weight__range">
+          <small id="male-weight-hint" class="weight__hint"></small>
         </div>
-      </details>
-    </section>
 
-    <section id="teams-panel" class="panel" aria-labelledby="teams-heading">
-      <div class="panel__head">
-        <h2 id="teams-heading" class="panel__title">Times do dia</h2>
-        <button type="button" class="btn btn--sun hide-on-mobile" data-action="generate">Gerar times</button>
-      </div>
+        <div id="result" class="result" aria-live="polite"></div>
+      </section>
+    </main>
 
-      <div class="weight">
-        <label for="male-weight" class="weight__label">Peso da nota masculina: <span id="male-weight-value"></span></label>
-        <input id="male-weight" type="range" class="weight__range">
-        <small id="male-weight-hint" class="weight__hint"></small>
-      </div>
-
-      <div id="result" class="result" aria-live="polite"></div>
-    </section>
-  </main>
-
-  <div class="dock" aria-label="Ações rápidas">
-    <span id="dock-summary" class="dock__summary"></span>
-    <button type="button" class="btn btn--sun" data-action="generate">Gerar times</button>
+    <div class="dock" aria-label="Ações rápidas">
+      <span id="dock-summary" class="dock__summary"></span>
+      <button type="button" class="btn btn--sun" data-action="generate">Gerar times</button>
+    </div>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
